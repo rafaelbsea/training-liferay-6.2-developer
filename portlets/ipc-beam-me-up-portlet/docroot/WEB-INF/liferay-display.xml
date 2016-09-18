@@ -7,5 +7,6 @@
 	</category>
 	<category name="IPC">
 		<portlet id="beam-me-up-portlet"></portlet>
+		<portlet id="arrival-portlet"></portlet>
 	</category>
 </display>
