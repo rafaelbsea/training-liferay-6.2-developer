@@ -5,9 +5,13 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.io.IOException;
 
+import javax.portlet.Event;
+import javax.portlet.EventRequest;
+import javax.portlet.EventResponse;
 import javax.portlet.GenericPortlet;
 import javax.portlet.PortletException;
 import javax.portlet.PortletRequestDispatcher;
+import javax.portlet.ProcessEvent;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
@@ -17,14 +21,14 @@ import javax.portlet.RenderResponse;
 public class ArrivalPortlet extends GenericPortlet {
 
     public void init() {
-        viewTemplate = getInitParameter("view-template");
+        viewJSP = getInitParameter("view-template");
     }
 
     public void doView(
             RenderRequest renderRequest, RenderResponse renderResponse)
         throws IOException, PortletException {
 
-        include(viewTemplate, renderRequest, renderResponse);
+        include(viewJSP, renderRequest, renderResponse);
     }
 
     protected void include(
@@ -42,8 +46,16 @@ public class ArrivalPortlet extends GenericPortlet {
             portletRequestDispatcher.include(renderRequest, renderResponse);
         }
     }
+    
+	@ProcessEvent(qname = "{http://liferay.com/events}ipc.beammeup")
+	public void arrivalDestination(EventRequest request, EventResponse response) {
+		Event event = request.getEvent();
+		String beammeup = (String) event.getValue();
+		response.setRenderParameter("beammeup", beammeup);
+	}
+
  
-    protected String viewTemplate;
+    protected String viewJSP;
 
     private static Log _log = LogFactoryUtil.getLog(ArrivalPortlet.class);
 
