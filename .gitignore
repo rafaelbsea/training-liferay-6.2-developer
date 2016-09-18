@@ -22,14 +22,6 @@ shared/
 tools/
 webs/
 
-build-common-hook.xml
-build-common-client.xml
-build-common-portlet.xml
-build-common-ext.xml
-build-common-theme.xml
-build-common-layouttpl.xml
-build.xml
-create.bat
-create.sh
-readme.txt
-merge.bat
+hooks/
+layouttpl/
+themes/
