@@ -1,0 +1,8 @@
+.DS_Store
+.classpath
+.settings/
+.project
+.tern-project
+.sass-cache/
+bin/
+docroot/WEB-INF/classes/
