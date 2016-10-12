@@ -249,4 +249,45 @@ public interface PartLocalService extends BaseLocalService, InvokableLocalServic
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
+
+	/**
+	* Adds the Part to the database incrementing the primary key
+	*
+	* @throws PortalException
+	*/
+	public com.liferay.training.parts.model.Part addPart(
+		com.liferay.training.parts.model.Part newPart, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Gets a list with all the Parts in a group
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.training.parts.model.Part> getPartsByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Gets a list with a range of Parts from a group
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.training.parts.model.Part> getPartsByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Gets the number of Parts in a group
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getPartsCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Gets a list of Parts from a Manufacturer
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.training.parts.model.Part> getPartsbyManufacturer(
+		long manufacturerId, long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
 }

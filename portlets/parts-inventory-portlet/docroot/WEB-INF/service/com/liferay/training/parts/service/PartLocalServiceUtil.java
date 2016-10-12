@@ -271,6 +271,53 @@ public class PartLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	/**
+	* Adds the Part to the database incrementing the primary key
+	*
+	* @throws PortalException
+	*/
+	public static com.liferay.training.parts.model.Part addPart(
+		com.liferay.training.parts.model.Part newPart, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addPart(newPart, userId);
+	}
+
+	/**
+	* Gets a list with all the Parts in a group
+	*/
+	public static java.util.List<com.liferay.training.parts.model.Part> getPartsByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getPartsByGroupId(groupId);
+	}
+
+	/**
+	* Gets a list with a range of Parts from a group
+	*/
+	public static java.util.List<com.liferay.training.parts.model.Part> getPartsByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getPartsByGroupId(groupId, start, end);
+	}
+
+	/**
+	* Gets the number of Parts in a group
+	*/
+	public static int getPartsCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getPartsCountByGroupId(groupId);
+	}
+
+	/**
+	* Gets a list of Parts from a Manufacturer
+	*/
+	public static java.util.List<com.liferay.training.parts.model.Part> getPartsbyManufacturer(
+		long manufacturerId, long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getPartsbyManufacturer(manufacturerId, groupId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

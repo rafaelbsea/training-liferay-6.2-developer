@@ -281,6 +281,58 @@ public class PartLocalServiceWrapper implements PartLocalService,
 	}
 
 	/**
+	* Adds the Part to the database incrementing the primary key
+	*
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.training.parts.model.Part addPart(
+		com.liferay.training.parts.model.Part newPart, long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _partLocalService.addPart(newPart, userId);
+	}
+
+	/**
+	* Gets a list with all the Parts in a group
+	*/
+	@Override
+	public java.util.List<com.liferay.training.parts.model.Part> getPartsByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partLocalService.getPartsByGroupId(groupId);
+	}
+
+	/**
+	* Gets a list with a range of Parts from a group
+	*/
+	@Override
+	public java.util.List<com.liferay.training.parts.model.Part> getPartsByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partLocalService.getPartsByGroupId(groupId, start, end);
+	}
+
+	/**
+	* Gets the number of Parts in a group
+	*/
+	@Override
+	public int getPartsCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partLocalService.getPartsCountByGroupId(groupId);
+	}
+
+	/**
+	* Gets a list of Parts from a Manufacturer
+	*/
+	@Override
+	public java.util.List<com.liferay.training.parts.model.Part> getPartsbyManufacturer(
+		long manufacturerId, long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _partLocalService.getPartsbyManufacturer(manufacturerId, groupId);
+	}
+
+	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
 	public PartLocalService getWrappedPartLocalService() {

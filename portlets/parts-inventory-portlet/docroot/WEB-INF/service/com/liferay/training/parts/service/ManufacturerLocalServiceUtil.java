@@ -275,6 +275,45 @@ public class ManufacturerLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
+	/**
+	* Adds the Manufacturer to the database incrementing the primary key
+	*
+	* @throws PortalException
+	*/
+	public static com.liferay.training.parts.model.Manufacturer addManufacturer(
+		com.liferay.training.parts.model.Manufacturer newManufacturer,
+		long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return getService().addManufacturer(newManufacturer, userId);
+	}
+
+	/**
+	* Gets a list with all the Manufacturers in a group
+	*/
+	public static java.util.List<com.liferay.training.parts.model.Manufacturer> getManufacturersByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getManufacturersByGroupId(groupId);
+	}
+
+	/**
+	* Gets a list with a range of Manufacturers from a group
+	*/
+	public static java.util.List<com.liferay.training.parts.model.Manufacturer> getManufacturersByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getManufacturersByGroupId(groupId, start, end);
+	}
+
+	/**
+	* Gets the number of Manufacturers in a group
+	*/
+	public static int getManufacturersCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return getService().getManufacturersCountByGroupId(groupId);
+	}
+
 	public static void clearService() {
 		_service = null;
 	}

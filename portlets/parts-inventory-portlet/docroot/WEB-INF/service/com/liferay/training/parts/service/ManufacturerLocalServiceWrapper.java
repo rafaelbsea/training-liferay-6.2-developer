@@ -288,6 +288,50 @@ public class ManufacturerLocalServiceWrapper implements ManufacturerLocalService
 	}
 
 	/**
+	* Adds the Manufacturer to the database incrementing the primary key
+	*
+	* @throws PortalException
+	*/
+	@Override
+	public com.liferay.training.parts.model.Manufacturer addManufacturer(
+		com.liferay.training.parts.model.Manufacturer newManufacturer,
+		long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException {
+		return _manufacturerLocalService.addManufacturer(newManufacturer, userId);
+	}
+
+	/**
+	* Gets a list with all the Manufacturers in a group
+	*/
+	@Override
+	public java.util.List<com.liferay.training.parts.model.Manufacturer> getManufacturersByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _manufacturerLocalService.getManufacturersByGroupId(groupId);
+	}
+
+	/**
+	* Gets a list with a range of Manufacturers from a group
+	*/
+	@Override
+	public java.util.List<com.liferay.training.parts.model.Manufacturer> getManufacturersByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _manufacturerLocalService.getManufacturersByGroupId(groupId,
+			start, end);
+	}
+
+	/**
+	* Gets the number of Manufacturers in a group
+	*/
+	@Override
+	public int getManufacturersCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException {
+		return _manufacturerLocalService.getManufacturersCountByGroupId(groupId);
+	}
+
+	/**
 	 * @deprecated As of 6.1.0, replaced by {@link #getWrappedService}
 	 */
 	public ManufacturerLocalService getWrappedManufacturerLocalService() {

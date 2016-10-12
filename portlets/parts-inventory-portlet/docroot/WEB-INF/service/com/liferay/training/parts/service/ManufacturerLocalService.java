@@ -253,4 +253,38 @@ public interface ManufacturerLocalService extends BaseLocalService,
 	public java.lang.Object invokeMethod(java.lang.String name,
 		java.lang.String[] parameterTypes, java.lang.Object[] arguments)
 		throws java.lang.Throwable;
+
+	/**
+	* Adds the Manufacturer to the database incrementing the primary key
+	*
+	* @throws PortalException
+	*/
+	public com.liferay.training.parts.model.Manufacturer addManufacturer(
+		com.liferay.training.parts.model.Manufacturer newManufacturer,
+		long userId)
+		throws com.liferay.portal.kernel.exception.PortalException,
+			com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Gets a list with all the Manufacturers in a group
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.training.parts.model.Manufacturer> getManufacturersByGroupId(
+		long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Gets a list with a range of Manufacturers from a group
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public java.util.List<com.liferay.training.parts.model.Manufacturer> getManufacturersByGroupId(
+		long groupId, int start, int end)
+		throws com.liferay.portal.kernel.exception.SystemException;
+
+	/**
+	* Gets the number of Manufacturers in a group
+	*/
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getManufacturersCountByGroupId(long groupId)
+		throws com.liferay.portal.kernel.exception.SystemException;
 }
