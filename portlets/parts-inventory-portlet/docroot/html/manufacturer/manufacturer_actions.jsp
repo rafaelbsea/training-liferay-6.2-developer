@@ -24,13 +24,5 @@ String redirect = PortalUtil.getCurrentURL(renderRequest);
 		<portlet:param name="manufacturerId" value="<%= String.valueOf(manufacturerId) %>" />
 		<portlet:param name="redirect" value="<%= redirect %>" />
 	</portlet:actionURL>
-
 	<liferay-ui:icon image="delete" url="<%=deleteURL.toString() %>" />
-
-	<liferay-security:permissionsURL
-		modelResource="<%= Manufacturer.class.getName() %>"
-		modelResourceDescription="<%= manufacturer.getName() %>"
-		resourcePrimKey="<%= String.valueOf(manufacturerId) %>"
-		var="permissionsURL" />
-	<liferay-ui:icon image="permissions" url="<%= permissionsURL %>" />    
 </liferay-ui:icon-menu>
