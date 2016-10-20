@@ -36,10 +36,34 @@ public class PartsPortlet extends MVCPortlet {
 			Part part = partFromRequest(request);
 			long userId = themeDisplay.getUserId();
 			PartLocalServiceUtil.addPart(part, userId);
-			SessionMessages.add(request, "part-added");
 			sendRedirect(request, response);
 
 	}
+	
+	/**
+	 * Updates the database record of an existing part.
+	 * 
+	 */
+	public void updatePart(ActionRequest request, ActionResponse response)
+			throws Exception {
+
+		Part part = partFromRequest(request);
+		PartLocalServiceUtil.updatePart(part);
+		sendRedirect(request, response);
+		
+	}	
+	
+	/**
+	 * Deletes a part from the database.
+	 * 
+	 */
+	public void deletePart(ActionRequest request, ActionResponse response)
+			throws Exception {
+		long partId = ParamUtil.getLong(request, "partId");
+		PartLocalServiceUtil.deletePart(partId);
+		sendRedirect(request, response);	
+	}
+
 	
 	/**
 	 * Convenience method to create a Part object out of the request. Used by

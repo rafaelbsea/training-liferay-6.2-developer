@@ -2,7 +2,6 @@ package com.liferay.training.parts.portlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -10,7 +9,6 @@ import com.liferay.training.parts.model.Manufacturer;
 import com.liferay.training.parts.model.impl.ManufacturerImpl;
 import com.liferay.training.parts.service.ManufacturerLocalServiceUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
-
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.PortletRequest;
@@ -28,14 +26,39 @@ public class ManufacturerPortlet extends MVCPortlet {
 			throws Exception {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-		
 		Manufacturer manufacturer = manufacturerFromRequest(request);
-
+		
 		long userId = themeDisplay.getUserId();
 		ManufacturerLocalServiceUtil.addManufacturer(manufacturer, userId);
 		sendRedirect(request, response);
 
 	}
+	
+	/**
+	 * Updates the database record of an existing manufacturer.
+	 * 
+	 */
+	public void updateManufacturer(ActionRequest request,
+			ActionResponse response) throws Exception {
+
+		Manufacturer manufacturer = manufacturerFromRequest(request);
+		ManufacturerLocalServiceUtil.updateManufacturer(manufacturer);
+		sendRedirect(request, response);
+
+	}
+
+	/**
+	 * Deletes a manufacturer from the database.
+	 * 
+	 */
+	public void deleteManufacturer(ActionRequest request,
+			ActionResponse response) throws Exception {
+
+		long manufacturerId = ParamUtil.getLong(request, "manufacturerId");
+		ManufacturerLocalServiceUtil.deleteManufacturer(manufacturerId);
+		sendRedirect(request, response);
+		
+	}	
 	
 	
 	/**
