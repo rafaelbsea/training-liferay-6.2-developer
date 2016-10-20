@@ -33,7 +33,6 @@ public class ManufacturerPortlet extends MVCPortlet {
 
 		long userId = themeDisplay.getUserId();
 		ManufacturerLocalServiceUtil.addManufacturer(manufacturer, userId);
-		SessionMessages.add(request, "manufacturer-added");
 		sendRedirect(request, response);
 
 	}
