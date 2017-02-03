@@ -3,6 +3,7 @@ build-common-osgi-plugin.xml
 build-common-plugins.xml
 build-common-plugin.xml
 build-common.xml
+build-common-plugins-inspector.xml
 build.properties
 build.rafael.properties
 common.bnd
@@ -24,8 +25,6 @@ webs/
 hooks/
 layouttpl/
 themes/
-<<<<<<< ec5f887221f46ca23740579a88356558db14816c
-=======
 
 Comments
 CONTRIBUTING.markdown
@@ -37,4 +36,3 @@ gradle.properties
 modules/
 source-formatter.properties
 portlets/
->>>>>>> Initial commit
