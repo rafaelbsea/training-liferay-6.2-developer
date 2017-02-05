@@ -23,9 +23,17 @@
 		<aui:input type="hidden" name="redirect" value="<%= redirect %>" />
 
 		<aui:input type="hidden" name="manufacturerId" value='<%= manufacturer == null ? "" : manufacturer.getManufacturerId() %>'/>
+		
+		<liferay-ui:error key="manufacturername-required" message="manufacturername-required" />
 		<aui:input name="name" />
+		
+		<liferay-ui:error key="manufactureremail-required" message="manufactureremail-required" />
+		<liferay-ui:error key="manufactureremail-format-error"	message="manufactureremail-format-error" />
 		<aui:input name="emailAddress" />
 		<aui:input name="website" />
+		
+		<liferay-ui:error key="manufacturerphonenumber-required" message="manufacturerphonenumber-required" />
+		<liferay-ui:error key="manufacturerphonenumber-format-error" message="manufacturerphonenumber-format-error" />
 		<aui:input name="phoneNumber" />
 	</aui:fieldset>
 
