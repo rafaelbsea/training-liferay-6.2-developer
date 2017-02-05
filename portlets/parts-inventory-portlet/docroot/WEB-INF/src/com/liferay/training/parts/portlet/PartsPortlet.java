@@ -35,9 +35,13 @@ public class PartsPortlet extends MVCPortlet {
 	public void addPart(ActionRequest request, ActionResponse response)
 			throws Exception {
 		Part part = partFromRequest(request);
+		ThemeDisplay themeDisplay =
+				(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
+		long userId = themeDisplay.getUserId();
+		
 		ArrayList<String> errors = new ArrayList<String>();
 		if (PartValidator.validatePart(part, errors)) {
-			PartLocalServiceUtil.addPart(part);
+			PartLocalServiceUtil.addPart(part, userId);
 			SessionMessages.add(request, "part-added");
 			sendRedirect(request, response);
 

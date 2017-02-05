@@ -31,41 +31,89 @@ public class ManufacturerPortlet extends MVCPortlet {
 	 */
 	public void addManufacturer(ActionRequest request, ActionResponse response)
 			throws Exception {
-		Manufacturer manufacturer = manufacturerFromRequest(request);
-		ArrayList<String> errors = new ArrayList<String>();
-		if (ManufacturerValidator.validateManufacturer(manufacturer, errors)) {
-			ManufacturerLocalServiceUtil.addManufacturer(manufacturer);
-			SessionMessages.add(request, "manufacturer-added");
-			sendRedirect(request, response);
-		} else {
-			for (String error : errors) {
-				SessionErrors.add(request, error);
-			}
-			PortalUtil.copyRequestParameters(request, response);
-			response.setRenderParameter("mvcPath",
-					"/html/manufacturer/edit_manufacturer.jsp");
-		}
-	}
 
+		ThemeDisplay themeDisplay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+
+		long groupId = themeDisplay.getScopeGroupId();
+
+		if (themeDisplay.getPermissionChecker()
+				.hasPermission(groupId, "com.liferay.training.parts.model",
+						groupId, "ADD_MANUFACTURER")) {
+
+			Manufacturer manufacturer = manufacturerFromRequest(request);
+
+			ArrayList<String> errors = new ArrayList<String>();
+
+			if (ManufacturerValidator
+					.validateManufacturer(manufacturer, errors)) {
+
+				long userId = themeDisplay.getUserId();
+
+				ManufacturerLocalServiceUtil.addManufacturer(manufacturer,
+						userId);
+
+				SessionMessages.add(request, "manufacturer-added");
+
+				sendRedirect(request, response);
+			} else {
+				for (String error : errors) {
+					SessionErrors.add(request, error);
+				}
+
+				PortalUtil.copyRequestParameters(request, response);
+
+				response.setRenderParameter("mvcPath",
+						"/html/manufacturer/edit_manufacturer.jsp");
+			}
+		} else {
+			SessionErrors.add(request, "permission-error");
+			sendRedirect(request, response);
+
+		}
+
+	}
+	
 	/**
 	 * Updates the database record of an existing manufacturer.
 	 * 
 	 */
 	public void updateManufacturer(ActionRequest request,
 			ActionResponse response) throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+
+		long groupId = themeDisplay.getScopeGroupId();
+
 		Manufacturer manufacturer = manufacturerFromRequest(request);
-		ArrayList<String> errors = new ArrayList<String>();
-		if (ManufacturerValidator.validateManufacturer(manufacturer, errors)) {
-			ManufacturerLocalServiceUtil.updateManufacturer(manufacturer);
-			SessionMessages.add(request, "manufacturer-updated");
-			sendRedirect(request, response);
-		} else {
-			for (String error : errors) {
-				SessionErrors.add(request, error);
+
+		if (themeDisplay.getPermissionChecker().hasPermission(groupId,
+				"com.liferay.training.parts.model.Manufacturer",
+				manufacturer.getManufacturerId(), "UPDATE")) {
+
+			ArrayList<String> errors = new ArrayList<String>();
+
+			if (ManufacturerValidator
+					.validateManufacturer(manufacturer, errors)) {
+				ManufacturerLocalServiceUtil.updateManufacturer(manufacturer);
+
+				SessionMessages.add(request, "manufacturer-updated");
+
+				sendRedirect(request, response);
+			} else {
+				for (String error : errors) {
+					SessionErrors.add(request, error);
+				}
+
+				PortalUtil.copyRequestParameters(request, response);
+
+				response.setRenderParameter("mvcPath",
+						"/html/manufacturer/edit_manufacturer.jsp");
 			}
-			PortalUtil.copyRequestParameters(request, response);
-			response.setRenderParameter("mvcPath",
-					"/html/manufacturer/edit_manufacturer.jsp");
+		} else {
+			SessionErrors.add(request, "permission-error");
+			sendRedirect(request, response);
 		}
 	}
 
@@ -75,17 +123,34 @@ public class ManufacturerPortlet extends MVCPortlet {
 	 */
 	public void deleteManufacturer(ActionRequest request,
 			ActionResponse response) throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+
+		long groupId = themeDisplay.getScopeGroupId();
+
 		long manufacturerId = ParamUtil.getLong(request, "manufacturerId");
-		if (Validator.isNotNull(manufacturerId)) {
-			ManufacturerLocalServiceUtil.deleteManufacturer(manufacturerId);
-			SessionMessages.add(request, "manufacturer-deleted");
-			sendRedirect(request, response);
+
+		if (themeDisplay.getPermissionChecker().hasPermission(groupId,
+				"com.liferay.training.parts.model.Manufacturer",
+				manufacturerId, "DELETE")) {
+
+			ArrayList<String> errors = new ArrayList<String>();
+
+			if (Validator.isNotNull(manufacturerId)) {
+				ManufacturerLocalServiceUtil.deleteManufacturer(manufacturerId);
+
+				SessionMessages.add(request, "manufacturer-deleted");
+
+				sendRedirect(request, response);
+			} else {
+				SessionErrors.add(request, "error-deleting");
+			}
 		} else {
-			SessionErrors.add(request, "deletion-error");
+			SessionErrors.add(request, "permission-error");
 			sendRedirect(request, response);
 		}
 	}
-
 	/**
 	 * Convenience method to create a Manufacturer object out of the request.
 	 * Used by the Add / Edit methods.
