@@ -1,5 +1,9 @@
 <%@ include file="/html/init.jsp" %>
 
+<liferay-ui:success key="manufacturer-added" message="manufacturer-added-successfully" />
+<liferay-ui:success key="manufacturer-updated" message="manufacturer-updated-successfully" />
+<liferay-ui:success key="manufacturer-deleted" message="manufacturer-deleted-successfully" />
+
 <%
 	String redirect = PortalUtil.getCurrentURL(renderRequest);
 %>

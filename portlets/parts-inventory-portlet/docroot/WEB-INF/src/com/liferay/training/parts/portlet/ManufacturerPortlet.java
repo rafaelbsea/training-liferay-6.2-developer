@@ -1,7 +1,12 @@
 package com.liferay.training.parts.portlet;
 
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletRequest;
+
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
@@ -9,9 +14,6 @@ import com.liferay.training.parts.model.Manufacturer;
 import com.liferay.training.parts.model.impl.ManufacturerImpl;
 import com.liferay.training.parts.service.ManufacturerLocalServiceUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.PortletRequest;
 
 /**
  * Portlet implementation class ManufacturerPortlet
@@ -30,6 +32,8 @@ public class ManufacturerPortlet extends MVCPortlet {
 		
 		long userId = themeDisplay.getUserId();
 		ManufacturerLocalServiceUtil.addManufacturer(manufacturer, userId);
+		SessionMessages.add(request, "manufacturer-added");
+		
 		sendRedirect(request, response);
 
 	}
@@ -43,6 +47,8 @@ public class ManufacturerPortlet extends MVCPortlet {
 
 		Manufacturer manufacturer = manufacturerFromRequest(request);
 		ManufacturerLocalServiceUtil.updateManufacturer(manufacturer);
+		SessionMessages.add(request, "manufacturer-updated");
+		
 		sendRedirect(request, response);
 
 	}
@@ -56,6 +62,9 @@ public class ManufacturerPortlet extends MVCPortlet {
 
 		long manufacturerId = ParamUtil.getLong(request, "manufacturerId");
 		ManufacturerLocalServiceUtil.deleteManufacturer(manufacturerId);
+		
+		SessionMessages.add(request, "manufacturer-deleted");
+		
 		sendRedirect(request, response);
 		
 	}	
