@@ -83,7 +83,7 @@ public class PartsPortlet extends MVCPortlet {
 			throws Exception {
 		long partId = ParamUtil.getLong(request, "partId");
 		
-		if(Validator.isNull(partId)){
+		if(Validator.isNotNull(partId)){
 			PartLocalServiceUtil.deletePart(partId);
 			SessionMessages.add(request, "part-deleted");
 			sendRedirect(request, response);
