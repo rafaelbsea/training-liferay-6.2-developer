@@ -2,9 +2,11 @@ package com.liferay.training.parts.portlet;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
@@ -13,6 +15,7 @@ import com.liferay.training.parts.model.impl.PartImpl;
 import com.liferay.training.parts.service.PartLocalServiceUtil;
 import com.liferay.util.bridges.mvc.MVCPortlet;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
@@ -31,15 +34,23 @@ public class PartsPortlet extends MVCPortlet {
 	 */
 	public void addPart(ActionRequest request, ActionResponse response)
 			throws Exception {
-
-		ThemeDisplay themeDisplay = (ThemeDisplay) request.getAttribute(WebKeys.THEME_DISPLAY);
-			Part part = partFromRequest(request);
-			long userId = themeDisplay.getUserId();
-			PartLocalServiceUtil.addPart(part, userId);
+		Part part = partFromRequest(request);
+		ArrayList<String> errors = new ArrayList<String>();
+		if (PartValidator.validatePart(part, errors)) {
+			PartLocalServiceUtil.addPart(part);
+			SessionMessages.add(request, "part-added");
 			sendRedirect(request, response);
 
+		} else {
+			for (String error : errors) {
+				SessionErrors.add(request, error);
+			}
+			PortalUtil.copyRequestParameters(request, response);
+			response.setRenderParameter("mvcPath", "/html/parts/edit_part.jsp");
+		}
+
 	}
-	
+
 	/**
 	 * Updates the database record of an existing part.
 	 * 
@@ -48,11 +59,22 @@ public class PartsPortlet extends MVCPortlet {
 			throws Exception {
 
 		Part part = partFromRequest(request);
-		PartLocalServiceUtil.updatePart(part);
-		sendRedirect(request, response);
-		
-	}	
-	
+		ArrayList<String> errors = new ArrayList<String>();
+		if (PartValidator.validatePart(part, errors)) {
+			PartLocalServiceUtil.updatePart(part);
+			SessionMessages.add(request, "part-updated");
+			sendRedirect(request, response);
+
+		} else {
+			for (String error : errors) {
+				SessionErrors.add(request, error);
+			}
+			PortalUtil.copyRequestParameters(request, response);
+			response.setRenderParameter("mvcPath", "/html/parts/edit_part.jsp");
+		}
+
+	}
+
 	/**
 	 * Deletes a part from the database.
 	 * 
@@ -60,11 +82,18 @@ public class PartsPortlet extends MVCPortlet {
 	public void deletePart(ActionRequest request, ActionResponse response)
 			throws Exception {
 		long partId = ParamUtil.getLong(request, "partId");
-		PartLocalServiceUtil.deletePart(partId);
-		sendRedirect(request, response);	
+		
+		if(Validator.isNull(partId)){
+			PartLocalServiceUtil.deletePart(partId);
+			SessionMessages.add(request, "part-deleted");
+			sendRedirect(request, response);
+		}else {
+			SessionErrors.add(request, "deletion-error");
+			sendRedirect(request, response);
+		}
+
 	}
 
-	
 	/**
 	 * Convenience method to create a Part object out of the request. Used by
 	 * the Add / Edit methods.
@@ -94,12 +123,10 @@ public class PartsPortlet extends MVCPortlet {
 		part.setCompanyId(themeDisplay.getCompanyId());
 		part.setGroupId(themeDisplay.getScopeGroupId());
 		part.setUserId(themeDisplay.getUserId());
-		
-		
+
 		return part;
 	}
 
 	private static Log _log = LogFactoryUtil.getLog(PartsPortlet.class);
-	
 
 }
