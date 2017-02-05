@@ -61,8 +61,8 @@ public class ManufacturerLocalServiceImpl extends
 	public Manufacturer addManufacturer(Manufacturer newManufacturer,
 			long userId) throws SystemException, PortalException {
 
-		long manufacturerId = counterLocalService.increment(Manufacturer.class
-				.getName());
+		long manufacturerId = counterLocalService
+				.increment(Manufacturer.class.getName());
 
 		Manufacturer manufacturer = manufacturerPersistence
 				.create(manufacturerId);
@@ -74,6 +74,12 @@ public class ManufacturerLocalServiceImpl extends
 		manufacturer.setWebsite(newManufacturer.getWebsite());
 
 		manufacturerPersistence.update(manufacturer);
+
+		resourceLocalService.addResources(manufacturer.getCompanyId(),
+						manufacturer.getGroupId(), userId,
+						Manufacturer.class.getName(), manufacturerId, false,
+						true, true);
+
 		return manufacturer;
 	}
 

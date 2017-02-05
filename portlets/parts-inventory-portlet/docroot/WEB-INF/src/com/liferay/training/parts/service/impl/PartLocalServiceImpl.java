@@ -70,6 +70,10 @@ public class PartLocalServiceImpl extends PartLocalServiceBaseImpl {
 
 		partPersistence.update(part);
 
+		resourceLocalService.addResources(part.getCompanyId(),
+				part.getGroupId(), userId, Part.class.getName(), partId, false,
+				true, true);
+
 		return part;
 
 	}
