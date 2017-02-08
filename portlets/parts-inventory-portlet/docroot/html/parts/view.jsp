@@ -1,24 +1,40 @@
 <%@ include file="/html/init.jsp"%>
 
+<%
+String redirect = PortalUtil.getCurrentURL(renderRequest);
+
+	boolean hasAddPermission = permissionChecker.hasPermission(
+			scopeGroupId, "com.liferay.training.parts.model",
+			scopeGroupId, "ADD_PART");
+	boolean hasConfigurePermission = permissionChecker.hasPermission(
+			scopeGroupId, "com.liferay.training.parts.model", scopeGroupId,
+			ActionKeys.PERMISSIONS);
+%>
+
 <liferay-ui:success key="part-added" message="part-added-successfully" />
 <liferay-ui:success key="part-deleted" message="part-deleted-successfully" />
 <liferay-ui:success key="part-updated" message="part-updated-successfully" />
 
 
-<%
-	String redirect = PortalUtil.getCurrentURL(renderRequest);
-%>
-
 <aui:button-row>
+	<c:if test='<%= hasAddPermission %>'>
+		<portlet:renderURL var="addPartURL">
+			<portlet:param name="mvcPath" value="/html/parts/edit_part.jsp" />
+			<portlet:param name="redirect" value="<%= redirect %>" />
+		</portlet:renderURL>
 
-	<portlet:renderURL var="addPartURL">
-		<portlet:param name="mvcPath" value="/html/parts/edit_part.jsp" />
-		<portlet:param name="redirect" value="<%=redirect%>" />
-	</portlet:renderURL>
+		<aui:button name="addPartButton" value="add-part"
+			onClick="<%=addPartURL %>" />
+	</c:if>
+	<c:if test='<%= hasConfigurePermission %>'>
+		<liferay-security:permissionsURL
+			modelResource="com.liferay.training.parts.model"
+			modelResourceDescription="parts-top-level-actions"
+			resourcePrimKey="<%= String.valueOf(scopeGroupId) %>"
+			var="permissionsURL" />
 
-	<aui:button name="addPartButton" value="add-part"
-		onClick="<%=addPartURL %>" />
-
+		<aui:button value="permissions" onClick="<%= permissionsURL %>" />
+	</c:if>
 </aui:button-row>
 
 <liferay-ui:search-container

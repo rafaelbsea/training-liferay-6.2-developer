@@ -34,25 +34,75 @@ public class PartsPortlet extends MVCPortlet {
 	 */
 	public void addPart(ActionRequest request, ActionResponse response)
 			throws Exception {
-		Part part = partFromRequest(request);
-		ThemeDisplay themeDisplay =
-				(ThemeDisplay)request.getAttribute(WebKeys.THEME_DISPLAY);
-		long userId = themeDisplay.getUserId();
-		
-		ArrayList<String> errors = new ArrayList<String>();
-		if (PartValidator.validatePart(part, errors)) {
-			PartLocalServiceUtil.addPart(part, userId);
-			SessionMessages.add(request, "part-added");
-			sendRedirect(request, response);
 
-		} else {
-			for (String error : errors) {
-				SessionErrors.add(request, error);
+		ThemeDisplay themeDisplay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+
+		long groupId = themeDisplay.getScopeGroupId();
+
+		if (themeDisplay.getPermissionChecker().hasPermission(groupId,
+				"com.liferay.training.parts.model", groupId, "ADD_PART")) {
+
+			ArrayList<String> errors = new ArrayList<String>();
+
+			Part part = partFromRequest(request);
+
+			if (PartValidator.validatePart(part, errors)) {
+
+				long userId = themeDisplay.getUserId();
+
+				PartLocalServiceUtil.addPart(part, userId);
+
+				SessionMessages.add(request, "part-added");
+
+				sendRedirect(request, response);
+			} else {
+				for (String error : errors) {
+					SessionErrors.add(request, error);
+				}
+
+				PortalUtil.copyRequestParameters(request, response);
+
+				response.setRenderParameter("mvcPath",
+						"/html/parts/edit_part.jsp");
 			}
-			PortalUtil.copyRequestParameters(request, response);
-			response.setRenderParameter("mvcPath", "/html/parts/edit_part.jsp");
+		} else {
+			SessionErrors.add(request, "permission-error");
+			sendRedirect(request, response);
 		}
+	}
 
+	/**
+	 * Deletes a part from the database.
+	 * 
+	 */
+	public void deletePart(ActionRequest request, ActionResponse response)
+			throws Exception {
+
+		ThemeDisplay themeDisplay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+
+		long groupId = themeDisplay.getScopeGroupId();
+
+		long partId = ParamUtil.getLong(request, "partId");
+
+		if (themeDisplay.getPermissionChecker().hasPermission(groupId,
+				"com.liferay.training.parts.model.Part",
+				partId, "DELETE")) {
+
+			if (Validator.isNotNull(partId)) {
+				PartLocalServiceUtil.deletePart(partId);
+
+				SessionMessages.add(request, "part-deleted");
+
+				sendRedirect(request, response);
+			} else {
+				SessionErrors.add(request, "deletion-error");
+			}
+		} else {
+			SessionErrors.add(request, "permission-error");
+			sendRedirect(request, response);
+		}
 	}
 
 	/**
@@ -62,40 +112,39 @@ public class PartsPortlet extends MVCPortlet {
 	public void updatePart(ActionRequest request, ActionResponse response)
 			throws Exception {
 
+		ThemeDisplay themeDisplay = (ThemeDisplay) request
+				.getAttribute(WebKeys.THEME_DISPLAY);
+
+		long groupId = themeDisplay.getScopeGroupId();
+
 		Part part = partFromRequest(request);
-		ArrayList<String> errors = new ArrayList<String>();
-		if (PartValidator.validatePart(part, errors)) {
-			PartLocalServiceUtil.updatePart(part);
-			SessionMessages.add(request, "part-updated");
-			sendRedirect(request, response);
 
-		} else {
-			for (String error : errors) {
-				SessionErrors.add(request, error);
+		if (themeDisplay.getPermissionChecker().hasPermission(groupId,
+				"com.liferay.training.parts.model.Part",
+				part.getPartId(), "UPDATE")) {
+
+			ArrayList<String> errors = new ArrayList<String>();
+
+			if (PartValidator.validatePart(part, errors)) {
+				PartLocalServiceUtil.updatePart(part);
+
+				SessionMessages.add(request, "part-updated");
+
+				sendRedirect(request, response);
+			} else {
+				for (String error : errors) {
+					SessionErrors.add(request, error);
+				}
+
+				PortalUtil.copyRequestParameters(request, response);
+
+				response.setRenderParameter("mvcPath",
+						"/html/parts/edit_part.jsp");
 			}
-			PortalUtil.copyRequestParameters(request, response);
-			response.setRenderParameter("mvcPath", "/html/parts/edit_part.jsp");
-		}
-
-	}
-
-	/**
-	 * Deletes a part from the database.
-	 * 
-	 */
-	public void deletePart(ActionRequest request, ActionResponse response)
-			throws Exception {
-		long partId = ParamUtil.getLong(request, "partId");
-		
-		if(Validator.isNotNull(partId)){
-			PartLocalServiceUtil.deletePart(partId);
-			SessionMessages.add(request, "part-deleted");
-			sendRedirect(request, response);
-		}else {
-			SessionErrors.add(request, "deletion-error");
+		} else {
+			SessionErrors.add(request, "permission-error");
 			sendRedirect(request, response);
 		}
-
 	}
 
 	/**
