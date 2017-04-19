@@ -6,6 +6,7 @@
 		</div>
 
 		<div class="portlet-column span6" id="column-2">
+			$processor.processPortlet("beammeupportlet_WAR_ipcbeammeupportlet")
 			$processor.processColumn("column-2", "portlet-column-content")
 		</div>
 
