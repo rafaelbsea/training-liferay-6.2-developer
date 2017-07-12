@@ -18,11 +18,10 @@ ivy.xml.MD5
 lib/
 misc/
 .project
+.settings/
 shared/
 tools/
 webs/
-
-hooks/
 
 
 Comments
