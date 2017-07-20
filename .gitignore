@@ -22,6 +22,9 @@ misc/
 shared/
 tools/
 webs/
+.tern-project
+*/docroot/WEB-INF/classes/*
+*.class
 
 
 Comments
