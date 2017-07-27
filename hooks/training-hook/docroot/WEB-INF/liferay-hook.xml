@@ -14,5 +14,12 @@
 	</language-properties>
 	<custom-jsp-dir>/META-INF/custom_jsps</custom-jsp-dir>
 	<custom-jsp-global>true</custom-jsp-global>
+	
+	<indexer-post-processor>
+		<indexer-class-name>com.liferay.portal.model.User</indexer-class-name>
+		<indexer-post-processor-impl>
+			com.liferay.training.indexer.MyUserIndexerPostProcessor
+		</indexer-post-processor-impl>
+	</indexer-post-processor>
 
 </hook>
