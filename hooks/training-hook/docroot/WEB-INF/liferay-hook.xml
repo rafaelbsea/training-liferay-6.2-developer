@@ -21,5 +21,14 @@
 			com.liferay.training.indexer.MyUserIndexerPostProcessor
 		</indexer-post-processor-impl>
 	</indexer-post-processor>
-
+	<!--  
+	<service>
+		<service-type>
+			com.liferay.portlet.expando.service.ExpandoValueLocalService
+		</service-type>
+		<service-impl>
+			com.liferay.training.MyExpandoValueLocalService
+		</service-impl>
+	</service> 
+	-->
 </hook>
