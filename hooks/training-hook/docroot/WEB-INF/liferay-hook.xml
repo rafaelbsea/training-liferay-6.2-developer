@@ -31,4 +31,19 @@
 		</service-impl>
 	</service> 
 	-->
+	<servlet-filter>
+		<servlet-filter-name>My Filter</servlet-filter-name>
+		<servlet-filter-impl>com.liferay.training.filter.MyFilter</servlet-filter-impl>
+		<init-param>
+			<param-name>hello</param-name>
+			<param-value>future astronaut</param-value>
+		</init-param>
+	</servlet-filter>
+	<servlet-filter-mapping>
+		<servlet-filter-name>My Filter</servlet-filter-name>
+		<before-filter>SSO Open SSO Filter</before-filter>
+		<url-pattern>/web/guest/welcome/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+	</servlet-filter-mapping>
 </hook>
